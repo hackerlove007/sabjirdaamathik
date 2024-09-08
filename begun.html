@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বেগুনের দামের অনুমান</title>
+    <h1>বেগুনের দামের নির্ধারণ </h1>
+    <script>
+        // Sample data for X (feature) and y (target) - these are the training data
+        const X = [10, 15, 20, 25, 30, 35];
+        const y = [15, 25, 40, 60, 52, 40];
+
+        // Function to calculate the mean of an array
+        function mean(arr) {
+            return arr.reduce((a, b) => a + b, 0) / arr.length;
+        }
+
+        // Function to perform simple linear regression
+        function linearRegression(X, y) {
+            const X_mean = mean(X);
+            const y_mean = mean(y);
+
+            // Calculate the slope (m) and intercept (b) for the line equation: y = m*x + b
+            let numerator = 0, denominator = 0;
+            for (let i = 0; i < X.length; i++) {
+                numerator += (X[i] - X_mean) * (y[i] - y_mean);
+                denominator += (X[i] - X_mean) ** 2;
+            }
+            const slope = numerator / denominator;
+            const intercept = y_mean - slope * X_mean;
+
+            return { slope, intercept };
+        }
+
+        // Function to make a prediction
+        function predict(slope, intercept, input) {
+            return slope * input + intercept;
+        }
+
+        // Function to handle the form submission and display the prediction
+        function handlePrediction() {
+            // Get user input
+            const userInput = parseFloat(document.getElementById("userInput").value);
+
+            // Perform linear regression to get slope and intercept
+            const { slope, intercept } = linearRegression(X, y);
+
+            // Make the prediction
+            const prediction = predict(slope, intercept, userInput);
+
+            // Display the prediction result
+            document.getElementById("result").innerText = `Predicted price: ${prediction.toFixed(2)}`;
+        }
+    </script>
+</head>
+<body>
+    <body style="background-image: url('https://www.sahajaseeds.com/wp-content/uploads/2022/11/Brinjal-Black-Beauty-3-scaled.jpg'); background-size: cover; background-position: center;">
+
+    <h1>Linear Regression Price Prediction</h1>
+    <p>এলাকার তাপমাত্রা:</p>
+
+    <!-- Input field for user to enter a value -->
+    <input type="number" id="userInput" placeholder="Enter value">
+
+    <!-- Button to trigger prediction -->
+    <button onclick="handlePrediction()">Predict</button>
+
+    <!-- Area to display the prediction result -->
+    <p id="result"></p>
+
+</body>
+</html>
